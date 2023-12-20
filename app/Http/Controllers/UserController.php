@@ -55,7 +55,29 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // $name = $request->name;
+        // $email = $request->email;
+        // $name = $request->name;
+        // $name = $request->name;
+        $input = $request->except(['_token']);
+        
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users|max:255',
+            'created_at' => 'required',
+            'updated_at' => 'required'
+        ]);
+
+        $user = User::find($id);
+
+        $user->name = $input["name"];
+        $user->email = $input["email"];
+        $user->created_at = $input["created_at"];
+        $user->updated_at = $input["updated_at"];
+
+        $user->save();
+
+        return redirect()->route('userMana.edit', ['userMana' => $id])->with('message', 'User Data Changed Successfully!');
     }
 
     /**
@@ -63,6 +85,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('userMana.index')->with('message', 'User Data Deleted Successfully!');
     }
 }

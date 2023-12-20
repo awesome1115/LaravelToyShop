@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <table class="table">
+    <table class="table" style="vertical-align: baseline;">
         <thead>
             <th>No</th>
             <th>Name</th>
@@ -20,8 +20,14 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td>{{ $user->updated_at }}</td>
-                    <td><a href="{{ route('userMana.edit', ['userMana' => $user->id]) }}">Edit</a></td>
-                    <td><a href="">Delete</a></td>
+                    <td><a href="{{ route('userMana.edit', ['userMana' => $user->id]) }}" class="btn btn-primary">Edit</a></td>
+                    <td>
+                        <form action="{{ route('userMana.destroy', ['userMana' => $user->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button href="{{ route('userMana.destroy', ['userMana' => $user->id]) }}" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
